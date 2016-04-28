@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<!-- <h:head> -->
+<!-- 	<h:outputStylesheet library="css" name="table-style.css" /> -->
+<!-- 	<title><h:outputText value="#{msg['profilelist.titre']}" /></title> -->
+<!-- </h:head> -->
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<!-- 	<title>Vue liste profils - BlairWitch</title> -->
+	<title>#{msg['profilelist.titre']}</title>
+	<h:outputStylesheet library="css" name="style.css" type="text/css"/>
+</h:head>
+
+<h:body>
+
+	<h:form id="form">
+		<div id="header">
+			<ui:insert name="header" >
+			  <ui:include src="/template/header.xhtml" />
+			</ui:insert>
+	    </div>
+
+		<h1>Liste des profils</h1>
+
+		<p:growl id="tool_north" showDetail="true" />
+		<p:toolbar>
+
+			<f:facet name="right">
+				<p:button outcome="profileFull" value="#{msg['button.add']}"
+					icon="ui-icon-plus" id="btn_north_add">
+					<f:param name="profileId" value="0" />
+					<f:param name="action" value="new" />
+					<p:tooltip id="toolTipNadd" for="btn_north_add" trackMouse="true"
+						value="#{msg['tooltip.addprofile']}" />
+				</p:button>
+
+				<p:commandButton action="#{profileListBean.deleteListProfile}"
+					value="#{msg['button.del']}" icon="ui-icon-trash"
+					id="btn_north_del" update="@form">
+					<p:tooltip id="toolTipNdel" for="btn_north_del" trackMouse="true"
+						value="#{msg['tooltip.delprofile']}" />
+
+				</p:commandButton>
+			</f:facet>
+		</p:toolbar>
+
+
+		<p:separator />
+
+		<div id="table">
+			<p:dataTable id="checkboxDT" value="#{profileListBean.profiles}"
+				var="profile" resizableColumns="true" resizeMode="expand"
+				scrollable="true" emptyMessage="Aucun profil"
+				selection="#{profileListBean.selectedProfiles}"
+				rowKey="#{profile.id}">
+
+				<!-- 			<f:facet name="header"> -->
+				<!-- 	        	Les profils -->
+				<!--     		</f:facet> -->
+
+				<!-- Chekcbox 1 -->
+				<p:column selectionMode="multiple"
+					style="width:16px;text-align:center" />
+
+				<p:column style="width:120px" sortBy="#{profile.id}">
+					<f:facet name="header">Id</f:facet>
+					<h:outputText value="#{profile.id}" />
+				</p:column>
+				<p:column sortBy="#{profile.libel}">
+					<f:facet name="header">Libel</f:facet>
+					<h:outputText value="#{profile.libel}" />
+				</p:column>
+
+				<!-- Update -->
+				<p:column headerText="maj" style="width:40px;text-align: center"
+					update=":form">
+					<p:button outcome="profileFull" icon="ui-icon-pencil">
+						<f:param name="profileId" value="#{profile.id}" />
+						<f:param name="action" value="update" />
+					</p:button>
+				</p:column>
+
+				<!-- Delete -->
+				<p:column headerText="del" style="width:40px;text-align: center">
+					<p:growl id="message" showDetail="true" />
+					<p:commandButton action="#{profileListBean.deleteOneProfile}"
+						icon="ui-icon-trash" update="@form">
+						<f:setPropertyActionListener target="#{profileListBean.profileId}"
+							value="#{profile.id}" />
+						<p:confirm header="Confirmation" message="Supprimer ?"
+							icon="ui-icon-alert" />
+					</p:commandButton>
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+						<p:commandButton value="#{msg['confirm.yes']}" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="#{msg['confirm.no']}" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+				</p:column>
+
+			</p:dataTable>
+		</div>
+
+		<p:separator />
+
+		<p:growl id="tool_south" showDetail="true" />
+		<p:toolbar>
+
+			<f:facet name="right">
+
+				<p:button outcome="profileFull" value="#{msg['button.add']}"
+					icon="ui-icon-plus" id="btn_south_add">
+					<f:param name="profileId" value="0" />
+					<f:param name="action" value="new" />
+					<p:tooltip id="toolTipSadd" for="btn_south_add" trackMouse="true"
+						value="#{msg['tooltip.addprofile']}" />
+				</p:button>
+
+				<p:commandButton action="#{profileListBean.deleteListProfile}"
+					value="#{msg['button.del']}" icon="ui-icon-trash"
+					id="btn_south_del" update="@form">
+				</p:commandButton>
+				<p:tooltip id="toolTipSdel" for="btn_south_del" trackMouse="true"
+					value="#{msg['tooltip.delprofile']}" />
+
+			</f:facet>
+		</p:toolbar>
+
+		<!-- affiche selected profile -->
+
+		<!-- cpnforme profile à supprimer -->
+		<!-- 	<p:confirmDialog header="Supprimer" widgetVar="carDelDialog" -->
+		<!-- 		modal="true" showEffect="fade" hideEffect="fade" resizable="false"> -->
+		<!-- 		<p:outputPanel id="carDelDetail" style="text-align:center;"> -->
+
+		<!-- 			<h:outputText style="text-align:center;" -->
+		<!-- 				value="Voulez-vous supprimer " /> -->
+		<!-- 			<h:outputText style="text-align:center;" -->
+		<!-- 				value="#{profileListBean.selectedProfile.libel}" /> -->
+		<!-- 			<p:panelGrid columns="2"> -->
+
+		<!-- 				<p:commandButton value="#{msg['confirm.yes']}" type="button" -->
+		<!-- 					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" -->
+		<!-- 					actionListener="#{profileListBean.destroyOneProfile}" /> -->
+		<!-- 	  				<f:setPropertyActionListener target="#{profileListBean.action}" value="delete" /> -->
+		<!-- 	  				<f:setPropertyActionListener target="#{profileListBean.profileId}" value="#{profile.id}" /> -->
+		<!-- 				<p:commandButton value="#{msg['confirm.no']}" type="button" -->
+		<!-- 					styleClass="ui-confirmdialog-no" icon="ui-icon-close" /> -->
+
+
+		<!-- 			</p:panelGrid> -->
+		<!-- 		</p:outputPanel> -->
+		<!-- 	</p:confirmDialog> -->
+
+		<!-- 		<p:dialog header="Selected Cars" widgetVar="multiCarDialog" -->
+		<!-- 			modal="true" showEffect="fade" hideEffect="fade" resizable="false" -->
+		<!-- 			width="200"> -->
+		<!-- 			<p:outputPanel id="multiCarDetail" style="text-align:center;"> -->
+		<!-- 				<ui:repeat value="#{profileListBean.selectedProfiles}" var="car"> -->
+		<!-- 					<h:outputText value="#{dt_profile.id} - #{dt_profile.libel}" -->
+		<!-- 						style="display:block" /> -->
+		<!-- 				</ui:repeat> -->
+		<!-- 			</p:outputPanel> -->
+		<!-- 		</p:dialog> -->
+	</h:form>
+</h:body>
+
+</html>

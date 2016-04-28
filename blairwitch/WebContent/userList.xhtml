@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:p="http://primefaces.org/ui">
+<!-- <f:view locale="#{changeLocale.locale}"> -->
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Vue liste utilisateurs - BlairWitch</title>
+		<h:outputStylesheet library="css" name="style.css" type="text/css"/>
+	</h:head>
+	<h:body>
+		
+		<div id="header">
+			<ui:insert name="header" >
+			  <ui:include src="/template/header.xhtml" />
+			</ui:insert>
+	    </div>
+	    
+		<h1>Liste des utilisateurs</h1>
+		
+		<h:form>
+			
+			<!-- pop-up -->
+			<p:growl id="tool_north" showDetail="true" />
+
+			<!-- boutons ajouter & supprimer une liste -->
+			<p:toolbar>
+	 			<f:facet name="right">
+					<p:button outcome="userFull" value="#{msg['button.add']}"
+						icon="ui-icon-plus" id="btn_north_add">
+						<f:param name="userId" value="0" />
+						<f:param name="action" value="new" />
+					<p:tooltip id="toolTipNadd" for="btn_north_add" trackMouse="true"
+						value="#{msg['tooltip.addprofile']}" />
+					</p:button>
+		
+					<p:commandButton action="#{profileListBean.deleteListProfile}"
+					value="#{msg['button.del']}" icon="ui-icon-trash"
+					id="btn_north_del" update="@form">
+					<p:tooltip id="toolTipNdel" for="btn_north_del" trackMouse="true"
+						value="#{msg['tooltip.delprofile']}" />
+					</p:commandButton>
+				</f:facet>
+			</p:toolbar>
+			
+			<!-- Liste des users -->
+			<p:dataTable id="tableUser" value="#{userListBean.allUsers}"
+			var="user" style="margin-bottom:40px" emptyMessage="Aucun utilisateur" 
+			selection="#{userListBean.selectedUsers}"
+			rowKey="#{user.id}">
+			
+			    <!-- Chekcbox 1 -->
+				<p:column selectionMode="multiple"
+					style="width:16px;text-align:center" />
+			    <!-- <p:column headerText="Id" sortBy="#{user.id}"> -->
+			    <p:column headerText="Id" sortBy="#{user.id}">
+			        <h:outputText value="#{user.id}" />
+			    </p:column>
+			    <p:column headerText="Nom" sortBy="#{user.surname}">
+			        <h:outputText value="#{user.surname}" />
+			    </p:column>
+			    <p:column headerText="Prénom" sortBy="#{user.name}">
+			        <h:outputText value="#{user.name}" />
+			    </p:column>
+			    <p:column headerText="Login" sortBy="#{user.login}">
+			        <h:outputText value="#{user.login}" />
+			    </p:column>
+			    <p:column headerText="Mot de passe" sortBy="#{user.password}">
+			        <h:outputText value="#{user.password}" />
+			    </p:column>
+			    
+				<!-- Update -->
+				<p:column headerText="maj" style="width:40px;text-align: center" update=":form">
+					<p:button outcome="userFull" icon="ui-icon-pencil">
+						<f:param name="userId" value="#{user.id}" />
+						<f:param name="action" value="update" />
+					</p:button>
+		        </p:column>
+		
+				<!-- Delete -->
+				<p:column headerText="del" style="width:40px;text-align: center">
+					<p:growl id="message" showDetail="true" />
+					<p:commandButton action="#{userListBean.deleteOneUser}" icon="ui-icon-trash" update="@form">
+		  				<f:setPropertyActionListener target="#{userListBean.userId}" value="#{user.id}" />
+		  				<p:confirm header="Confirmation" message="Supprimer ?" icon="ui-icon-alert" />
+		  			</p:commandButton>
+			  		<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+						<p:commandButton value="#{msg['confirm.yes']}" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="#{msg['confirm.no']}" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+				    </p:confirmDialog>
+		        </p:column>
+		        
+			</p:dataTable>
+			
+			<!-- pop-up -->
+			<p:growl id="tool_south" showDetail="true" />
+			<!-- boutons ajouter & supprimer une liste -->
+			 <p:toolbar>
+			 <f:facet name="right">
+				<p:button outcome="userFull" value="#{msg['button.add']}" icon="ui-icon-plus" id="btn_south_add">
+					<f:param name="userId" value="0" />
+					<f:param name="action" value="new" />
+						<f:param name="i" value="2" />
+					<p:tooltip id="toolTipSadd" for="btn_south_add" trackMouse="true"
+						value="#{msg['tooltip.addprofile']}" />
+				</p:button>
+	
+				<p:commandButton action="#{userListBean.deleteOneUser}" value="#{msg['button.del']}"
+					icon="ui-icon-trash" id="btn_south_del" update="@form">
+				</p:commandButton>
+				<p:tooltip id="toolTipSdel" for="btn_south_del" trackMouse="true"
+					value="#{msg['tooltip.delprofile']}" />
+			</f:facet>
+			</p:toolbar>
+			
+			<!-- affiche selected User -->
+			 <p:dialog header="Car Info" widgetVar="carDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+		        <p:outputPanel id="carDetail" style="text-align:center;">
+		            <p:panelGrid  columns="2">
+		                <h:outputText value="Id : " />
+		                <h:outputText value="#{userListBean.selectedUser.id}" />
+		                <h:outputText value="Surname : " />
+		                <h:outputText value="#{userListBean.selectedUser.surname}" />
+		                <h:outputText value="Name : " />
+		                <h:outputText value="#{userListBean.selectedUser.name}" />
+		                <h:outputText value="Login : " />
+		                <h:outputText value="#{userListBean.selectedUser.login}" />
+		                <h:outputText value="Password : " />
+		                <h:outputText value="#{userListBean.selectedUser.password}" />
+		            </p:panelGrid>
+		        </p:outputPanel>
+		    </p:dialog>
+		</h:form>
+	</h:body>
+<!-- </f:view> -->
+</html>

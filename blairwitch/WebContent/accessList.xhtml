@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:p="http://primefaces.org/ui">
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Droits - BlairWitch</title>
+		<h:outputStylesheet library="css" name="style.css" type="text/css"/>
+	</h:head>
+	<h:body>
+		<div id="page">
+			
+		    <div id="header">
+				<ui:insert name="header" >
+				  <ui:include src="/template/header.xhtml" />
+				</ui:insert>
+		    </div>
+		    
+			<h1>Liste des droits</h1>
+		    
+		   <h:form>
+			
+			<p:growl id="message" showDetail="true" />
+
+			<p:toolbar>
+	 			<f:facet name="right">
+					<p:button outcome="accessFull" value="#{msg['button.add']}" icon="ui-icon-plus">
+						<f:param name="accessId" value="0" />
+						<f:param name="action" value="new" />
+						<f:param name="i" value="2" />
+					</p:button>
+		
+					<p:commandButton action="#{accessListBean.deleteOneAccess}" value="#{msg['button.del']}" icon="ui-icon-trash">
+		  				<f:setPropertyActionListener target="#{accessListBean.action}" value="delete" />
+		  				<f:setPropertyActionListener target="#{accessListBean.accessId}" value="14" />
+					</p:commandButton>
+				</f:facet>
+			</p:toolbar>
+			
+			<p:dataTable id="tableAccess" value="#{accessListBean.accessListe}"
+			var="access" style="margin-bottom:40px" emptyMessage="Aucun Droit">
+			
+			     <p:column headerText="">
+			        <h:selectBooleanCheckbox value="checked" name="#{access.id}" />
+			    </p:column>
+			    <!-- <p:column headerText="Id" sortBy="#{access.id}"> -->
+			    <p:column headerText="Id" sortBy="#{access.id}">
+			        <h:outputText value="#{access.id}" />
+			    </p:column>
+			    <p:column headerText="Authorization" sortBy="#{access.authorization}">
+			        <h:outputText value="#{access.authorization}" />
+			    </p:column>
+			    		    			    
+				<!-- Update -->
+				<p:column headerText="maj" style="width:40px;text-align: center" update=":form">
+					<p:button outcome="accessFull" icon="ui-icon-pencil">
+						<f:param name="accessId" value="#{access.id}" />
+						<f:param name="action" value="update" />
+					</p:button>
+		        </p:column>
+		
+				<!-- Delete -->
+				<p:column headerText="del" style="width:40px;text-align: center">
+					<p:growl id="message" showDetail="true" />
+					<p:commandButton action="#{accessListBean.deleteOneAccess}"
+						icon="ui-icon-trash" update="@form">
+						<f:setPropertyActionListener target="#{accessListBean.accessId}"
+							value="#{access.id}" />
+						<p:confirm header="Confirmation" message="Supprimer ?"
+							icon="ui-icon-alert" />
+					</p:commandButton>
+					<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+						<p:commandButton value="Yes" type="button"
+							styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+						<p:commandButton value="No" type="button"
+							styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+					</p:confirmDialog>
+				</p:column>
+		        
+			</p:dataTable>
+			
+			<p:growl id="tool_south" showDetail="true" />
+			 <p:toolbar>
+			 <f:facet name="right">
+				<p:button outcome="accessFull" value="#{msg['button.add']}" icon="ui-icon-plus" id="btn_south_add">
+					<f:param name="userId" value="0" />
+					<f:param name="action" value="new" />
+						<f:param name="i" value="2" />
+						<p:tooltip id="toolTipSadd" for="btn_south_add" trackMouse="true"
+						value="Ajouter un nouveau profil" />
+				</p:button>
+	
+				<p:commandButton action="#{accessListBean.deleteOneAccess}" value="#{msg['button.del']}" 
+				icon="ui-icon-trash" id="btn_south_del" update="@form">
+	  				<p:tooltip id="toolTipSdel" for="btn_south_del" trackMouse="true"
+					value="Supprimer les profils cochés" />
+				</p:commandButton>
+				
+			</f:facet>
+			</p:toolbar>
+			
+			<!-- affiche selected User -->
+			 <p:dialog header="Car Info" widgetVar="carDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+		        <p:outputPanel id="carDetail" style="text-align:center;">
+		            <p:panelGrid  columns="2">
+		                <h:outputText value="Id : " />
+		                <h:outputText value="#{accessListBean.selectedAccess.id}" />
+		                <h:outputText value="Authorization : " />
+		                <h:outputText value="#{accessListBean.selectedAccess.authorization}" />
+		            </p:panelGrid>
+		        </p:outputPanel>
+		    </p:dialog>
+		</h:form>
+		</div>
+    </h:body>
+</html>

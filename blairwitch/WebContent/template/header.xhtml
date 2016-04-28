@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:h="http://java.sun.com/jsf/html"
+xmlns:f="http://java.sun.com/jsf/core"
+xmlns:ui="http://java.sun.com/jsf/facelets"
+xmlns:p="http://primefaces.org/ui">
+    <body>
+	    <ui:composition>
+	
+			<!-- <ul class="nav">
+				<li><a href="index.jsf">Accueil</a></li>
+				<li><a href="userList.jsf">Utilisateurs</a></li>
+				<li><a href="">Profils</a></li>
+				<li><a href="">Droits</a></li>
+			</ul> -->
+			
+			<!-- <p:menubar style="font-size: 1em;">
+		        <p:menuitem value="Accueil" url="index.jsf">
+			    </p:menuitem>
+			    <p:submenu label="Utilisateurs">
+		            <p:menuitem value="Liste des utilisateurs" url="/userList.jsf"/>
+		            <p:menuitem value="Ajout d'un utilisateur" url="/userFull.jsf"/>
+		        </p:submenu>
+		        <p:submenu label="Profils">
+		            <p:menuitem value="Liste des profils" url="/profileList.jsf"/>
+		            <p:menuitem value="Ajout d'un profil" url="/profileFull.jsf"/>
+		        </p:submenu>
+		        <p:submenu label="Droits">
+		            <p:menuitem value="Liste des droits" url="/accessList.jsf"/>
+		            <p:menuitem value="Ajout d'un droit" url="/accessFull.jsf"/>
+		        </p:submenu>
+		    </p:menubar> -->
+		    
+		    <p:tabMenu activeIndex="#{param.i}" style="font-size: 0.8em;">
+			    <p:menuitem value="Accueil" outcome="/index.jsf">
+			        <f:param name="i" value="0" />
+			    </p:menuitem>
+			    <p:menuitem value="Liste des utilisateurs" outcome="/userList.jsf">
+			        <f:param name="i" value="1" />
+			    </p:menuitem>
+			    <p:menuitem value="Ajout d'un utilisateur" outcome="/userFull.jsf">
+			        <f:param name="i" value="2" />
+			    </p:menuitem>
+			    <p:menuitem value="Liste des profils" outcome="/profileList.jsf">
+			        <f:param name="i" value="3" />
+			    </p:menuitem>
+			    <p:menuitem value="Ajout d'un profil" outcome="/profileFull.jsf">
+			        <f:param name="i" value="4" />
+			    </p:menuitem>
+			    <p:menuitem value="Liste des droits" outcome="/accessList.jsf">
+			        <f:param name="i" value="5" />
+			    </p:menuitem>
+			    <p:menuitem value="Ajout d'un droit" outcome="/accessFull.jsf">
+			        <f:param name="i" value="6" />
+			    </p:menuitem>
+			</p:tabMenu>
+			<br/>
+	    </ui:composition>
+    </body>
+</html>

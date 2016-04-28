@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Vue pleine d'un utilisateur - BlairWitch</title>
+		<h:outputStylesheet library="css" name="style.css" type="text/css"/>
+	</h:head>
+	<h:body>
+		<div id="header">
+			<ui:insert name="header" >
+			  <ui:include src="/template/header.xhtml" />
+			</ui:insert>
+	    </div>
+	
+		<h1>Fiche d'un utilisateur</h1>
+		
+		<f:metadata>
+			<f:viewParam name="userId" value="#{userFullBean.userId}" />
+		</f:metadata>
+		
+		<h:form id="form_user">
+
+		<!-- pop-up -->
+		<p:growl id="user_fiche" showDetail="true" sticky="true" />
+
+		<!-- Fiche utilisateur -->
+		<p:panel header="Utilisateur">
+			<h:panelGrid columns="2" cellpadding="5">
+				<p:outputLabel for="surname" value="Surname : " />
+				<p:inputText id="surname" value="#{userFullBean.surname}" />
+				
+				<p:outputLabel for="name" value="Name : " />
+				<p:inputText id="name" value="#{userFullBean.name}"/>
+			
+				<p:outputLabel for="login" value="Login : " />
+				<p:inputText id="login" value="#{userFullBean.login}" required="true" />
+			
+				<p:outputLabel for="password" value="Password : " />
+				<p:password id="password" value="#{userFullBean.password}" required="true" />
+			
+				<p:outputLabel for="password2" value="Confirm Password : " />
+				<p:password id="password2" value="#{userFullBean.password}" required="true" />
+			</h:panelGrid>
+
+			<!-- Validation / annulation avec retour à la vue liste -->
+			<p:commandButton value="Sauver"
+				actionListener="#{userFullBean.saveOneUser}" update="user_fiche" />
+			<p:button outcome="userList" value="Annuler">
+				<f:param name="i" value="1" />
+			</p:button>
+		</p:panel>
+
+	</h:form>
+	</h:body>
+</html>

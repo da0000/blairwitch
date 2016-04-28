@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Vue pleine d'un profil - BlairWitch</title>
+	<h:outputStylesheet library="css" name="style.css" type="text/css"/>
+</h:head>
+
+<h:body>
+
+	<f:metadata>
+		<f:viewParam name="profileId" value="#{profileFullBean.profileId}" />
+		<f:viewParam name="action" value="#{profileFullBean.action}" />
+	</f:metadata>
+
+	<h:form id="form">
+		<div id="header">
+			<ui:insert name="header" >
+			  <ui:include src="/template/header.xhtml" />
+			</ui:insert>
+	    </div>
+
+		<h1>Fiche du profil</h1>
+
+		<p:growl id="profil_fiche" showDetail="true" sticky="true" />
+
+		<p:panel header="Profil">
+
+			<h:panelGrid columns="2" cellpadding="5">
+				<p:outputLabel for="msg" value="#{msg['label.profile']} :" />
+				<p:inputText id="msg" value="#{profileFullBean.libel}" required="true" />
+			</h:panelGrid>
+
+			<p:commandButton value="#{msg['button.save']}"
+				actionListener="#{profileFullBean.saveOneProfile}" update="profil_fiche" />
+			<p:button outcome="profileList" value="#{msg['button.cancel']}" >
+				<f:param name="i" value="3" />
+			</p:button>
+		</p:panel>
+
+	<!-- Tableau des access -->
+	<div id="tab_access">
+
+		<p:dataTable id="accessDT" value="#{profileFullBean.accesses}" var="access"
+				resizableColumns="true" resizeMode="expand" scrollable="true"
+				emptyMessage="Aucun acces"
+				selection="#{profileFullBean.selectedCars}" rowKey="#{access.id}" 
+				style="margin-bottom:0">
+
+			<p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+
+			<p:column headerText="Id" sortBy="#{access.id}">
+	        	<h:outputText value="#{access.id}" />
+	    	</p:column>
+	 		<p:column headerText="Authorisation" sortBy="#{access.authorization}">
+	        	<h:outputText value="#{access.authorization}" />
+	    	</p:column>		
+
+			<f:facet name="footer">
+            	<p:commandButton process="accessDT" update=":form:multiCarDetail" icon="ui-icon-search" value="View" oncomplete="PF('multiCarDialog').show()" />
+        	</f:facet>
+        
+		</p:dataTable>
+		
+		<p:dialog header="Selected Accesses" widgetVar="multiCarDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" width="200">
+	        <p:outputPanel id="multiCarDetail" style="text-align:center;">
+	            <ui:repeat value="#{profileFullBean.selectedCars}" var="access">
+	                <h:outputText value="#{access.id} - #{access.authorization}" style="display:block"/>
+	            </ui:repeat>
+	        </p:outputPanel>
+	    </p:dialog>
+</div>
+	</h:form>
+
+</h:body>
+</html>

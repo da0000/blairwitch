@@ -1,0 +1,11 @@
+@CHARSET "UTF-8";
+* {
+	font-family: verdana;
+}
+
+h1, h2 {
+	font-size: 1.5em;
+	color: #555;
+	font-style: italic;
+	padding: 15px 0;
+}
