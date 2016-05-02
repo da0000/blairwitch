@@ -51,7 +51,10 @@ xmlns:p="http://primefaces.org/ui">
 			<p:dataTable id="tableUser" value="#{userListBean.allUsers}"
 			var="user" style="margin-bottom:40px" emptyMessage="Aucun utilisateur" 
 			selection="#{userListBean.selectedUsers}"
-			rowKey="#{user.id}">
+			rowKey="#{user.id}" paginator="true" rows="10"
+			paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+            rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{dtLazyView.selectedCar}" id="carTable" lazy="true">
+            <p:ajax event="rowSelect" listener="#{dtLazyView.onRowSelect}" update=":form:carDetail" oncomplete="PF('carDialog').show()" />
 			
 			    <!-- Chekcbox 1 -->
 				<p:column selectionMode="multiple"
@@ -103,7 +106,7 @@ xmlns:p="http://primefaces.org/ui">
 			<!-- boutons ajouter & supprimer une liste -->
 			 <p:toolbar>
 			 <f:facet name="right">
-				<p:button outcome="userFull" value="#{msg['button.add']}" icon="ui-icon-plus" id="btn_south_add">
+				<p:button outcome="userFull" value="#{msg['button.add']}" icon="ui-icon-plus">
 					<f:param name="userId" value="0" />
 					<f:param name="action" value="new" />
 						<f:param name="i" value="2" />
