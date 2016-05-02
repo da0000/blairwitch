@@ -51,10 +51,7 @@ xmlns:p="http://primefaces.org/ui">
 			<p:dataTable id="tableUser" value="#{userListBean.allUsers}"
 			var="user" style="margin-bottom:40px" emptyMessage="Aucun utilisateur" 
 			selection="#{userListBean.selectedUsers}"
-			rowKey="#{user.id}" paginator="true" rows="10"
-			paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-            rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{dtLazyView.selectedCar}" id="carTable" lazy="true">
-            <p:ajax event="rowSelect" listener="#{dtLazyView.onRowSelect}" update=":form:carDetail" oncomplete="PF('carDialog').show()" />
+			rowKey="#{user.id}">
 			
 			    <!-- Chekcbox 1 -->
 				<p:column selectionMode="multiple"
