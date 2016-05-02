@@ -24,130 +24,141 @@ import fr.hb.service.UserService;
 @SessionScoped
 public class UserListBean {
 
-    private static final Logger LOG = Logger.getLogger(ProfileService.class);
+	private static final Logger LOG = Logger.getLogger(ProfileService.class);
 
-    private List<User> allUsers = new ArrayList<User>();
-    private User selectedUser;
-    private List<User> selectedUsers;
-    private String userId;
-    private String action;
+	private List<User> allUsers = new ArrayList<User>();
+	private User selectedUser;
+	private List<User> selectedUsers;
+	private String userId;
+	private String action;
 
-    @ManagedProperty("#{userService}")
-    private UserService service;
+	@ManagedProperty("#{userService}")
+	private UserService service;
 
-    // Getters & setters
-    public User getSelectedUser() {
-	return selectedUser;
-    }
+	// Getters & setters
+	public User getSelectedUser() {
+		return selectedUser;
+	}
 
-    public void setSelectedUser(User selectedUser) {
-	this.selectedUser = selectedUser;
-    }
+	public void setSelectedUser(User selectedUser) {
+		this.selectedUser = selectedUser;
+	}
 
-    public List<User> getSelectedUsers() {
-	return selectedUsers;
-    }
+	public List<User> getSelectedUsers() {
+		return selectedUsers;
+	}
 
-    public void setSelectedUsers(List<User> selectedUsers) {
-	this.selectedUsers = selectedUsers;
-    }
+	public void setSelectedUsers(List<User> selectedUsers) {
+		this.selectedUsers = selectedUsers;
+	}
 
-    public String getUserId() {
-	return userId;
-    }
+	public String getUserId() {
+		return userId;
+	}
 
-    public void setUserId(String userId) {
-	this.userId = userId;
-    }
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 
-    public String getAction() {
-	return action;
-    }
+	public String getAction() {
+		return action;
+	}
 
-    public void setAction(String action) {
-	this.action = action;
-    }
+	public void setAction(String action) {
+		this.action = action;
+	}
 
-    public void setAllUsers(List<User> allUsers) {
-	this.allUsers = allUsers;
-    }
+	public void setAllUsers(List<User> allUsers) {
+		this.allUsers = allUsers;
+	}
 
-    public List<User> getAllUsers() {
-	return allUsers;
-    }
+	public List<User> getAllUsers() {
+		return allUsers;
+	}
 
-    public void setAllUsers(Collection<User> allUsers) {
-	this.allUsers = (List<User>) allUsers;
-    }
+	public void setAllUsers(Collection<User> allUsers) {
+		this.allUsers = (List<User>) allUsers;
+	}
 
-    public UserService getService() {
-	return service;
-    }
+	public UserService getService() {
+		return service;
+	}
 
-    public void setService(UserService service) {
-	this.service = service;
-    }
+	public void setService(UserService service) {
+		this.service = service;
+	}
 
-    // Constructor
-    public UserListBean() {
-	super();
-    }
+	// Constructor
+	public UserListBean() {
+		super();
+	}
 
-    @PostConstruct
-    public void init() {
-	UserService userService = new UserService();
-	allUsers = (List<User>) userService.findAllUser();
-    }
+	@PostConstruct
+	public void init() {
+		UserService userService = new UserService();
+		allUsers = (List<User>) userService.findAllUser();
+	}
 
-    // Sélection d'une checkbox
-    public void onRowSelect(SelectEvent event) {
-	FacesMessage msg = new FacesMessage("User Selected",
-		((User) event.getObject()).getId().toString());
-	FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
+	// Sélection d'une checkbox
+	public void onRowSelect(SelectEvent event) {
+		FacesMessage msg = new FacesMessage("User Selected",
+				((User) event.getObject()).getId().toString());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
 
-    // Désélection d'une checkbox
-    public void onRowUnselect(UnselectEvent event) {
-	FacesMessage msg = new FacesMessage("User Unselected",
-		((User) event.getObject()).getId().toString());
-	FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
+	// Désélection d'une checkbox
+	public void onRowUnselect(UnselectEvent event) {
+		FacesMessage msg = new FacesMessage("User Unselected",
+				((User) event.getObject()).getId().toString());
+		FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
 
-    // Destruction d'une ligne cochée
-    public void destroyOneUser() {
-	FacesContext fc = FacesContext.getCurrentInstance();
-	Map<String, String> params = fc.getExternalContext()
-		.getRequestParameterMap();
+	// Destruction d'une ligne cochée
+	public void destroyOneUser() {
+		FacesContext fc = FacesContext.getCurrentInstance();
+		Map<String, String> params = fc.getExternalContext()
+				.getRequestParameterMap();
 
-	userId = params.get("userId");
-	LOG.info("param : " + userId);
-	addMessage("Suppression", "L'utilisateur " + userId
-		+ " a été supprimé.");
-    }
+		userId = params.get("userId");
+		LOG.info("param : " + userId);
+		addMessage("Suppression", "L'utilisateur " + userId
+				+ " a été supprimé.");
+	}
 
-    // methode ok
-    public void deleteOneUser() {
-	FacesContext context = FacesContext.getCurrentInstance();
+	// public void attrListener(ActionEvent event) {
+	// userId = (String) event.getComponent().getAttributes().get("userId");
+	// LOG.info("attrListen : " + userId);
+	// }
+	//
+	// public void attrOneUser() {
+	// LOG.info("attribut : " + userId);
+	// addMessage("Attr Suppression", "L'utilisateur " + userId
+	// + " a été supprimé.");
+	// }
 
-	UserService userService = new UserService();
-	LOG.info("userId = " + userId);
-	Integer uId = Integer.parseInt(userId);
+	// methode ok
+	public void deleteOneUser() {
+		FacesContext context = FacesContext.getCurrentInstance();
 
-	userService.removeUser(uId);
-	setAllUsers(userService.findAllUser());
+		UserService userService = new UserService();
+		LOG.info("userId = " + userId);
+		Integer uId = Integer.parseInt(userId);
 
-	context.addMessage(null, new FacesMessage("Successful",
-		"L'utilisateur " + userId + " est supprimé."));
-    }
+		userService.removeUser(uId);
+		setAllUsers(userService.findAllUser());
 
-    public void deleteProfile(Integer uId) {
-	LOG.info("delete profile = " + uId);
-    }
+		context.addMessage(null, new FacesMessage("Successful",
+				"L'utilisateur " + userId + " est supprimé."));
+	}
 
-    // ajout message pop-up
-    public void addMessage(String summary, String detail) {
-	FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
-		summary, detail);
-	FacesContext.getCurrentInstance().addMessage(null, message);
-    }
+	public void deleteProfile(Integer uId) {
+		LOG.info("delete profile = " + uId);
+	}
+
+	// ajout message pop-up
+	public void addMessage(String summary, String detail) {
+		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
+				summary, detail);
+		FacesContext.getCurrentInstance().addMessage(null, message);
+	}
 }
